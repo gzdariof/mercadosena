@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Categoria;
+use Illuminate\Support\Facades\Validator;
 
 class CategoriaController extends Controller
 {
@@ -32,8 +33,20 @@ class CategoriaController extends Controller
     public function store(Request $request)
     {
         //
-        Categoria::create($request->all());
-        return redirect('categorias');
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required|max:50',
+            'descripcion' => 'required|max:200'
+        ]);
+        if ($validator->fails()) {
+            return back()->withErrors($validator)
+                         ->withInput();
+        }
+        else {
+            Categoria::create($request->all());
+            return redirect('categorias')->with('type','success')
+                                         ->with('message','Registro creado exitosamente.');
+        }
+        
     }
 
     /**

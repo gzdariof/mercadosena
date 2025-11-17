@@ -26,3 +26,23 @@
         <a href="{{ url('categorias') }}" class="btn btn-secondary">Cancelar</a>        
     </form>
 @stop()
+@section('js')
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="{{ url('js/jquery.validate.min.js') }}"></script>
+    <script src="{{ url('js/localization/messages_es.min.js') }}"></script>
+
+    <script>
+        $("#form").validate({
+            rules: {
+                nombre: {
+                    required: true,
+                    maxlength: 50
+                },
+                descripcion: {
+                    required: true,
+                    maxlength: 50
+                }
+            }
+        });
+    </script>
+@stop()
