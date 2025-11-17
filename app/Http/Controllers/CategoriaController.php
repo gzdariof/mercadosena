@@ -45,8 +45,7 @@ class CategoriaController extends Controller
             Categoria::create($request->all());
             return redirect('categorias')->with('type','success')
                                          ->with('message','Registro creado exitosamente.');
-        }
-        
+        } 
     }
 
     /**
@@ -63,14 +62,29 @@ class CategoriaController extends Controller
     public function edit(string $id)
     {
         //
+        $datos = Categoria::find($id);
+        return view('categorias.edit', compact('datos'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Categoria $categoria)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required|max:50',
+            'descripcion' => 'required|max:200'
+        ]);
+        if ($validator->fails()) {
+            return back()->withErrors($validator)
+                         ->withInput();
+        }
+        else {
+            $categoria->update($request->all());
+            return redirect('categorias')->with('type','warning')
+                                         ->with('message','Registro actualizado exitosamente.');
+        }
     }
 
     /**
@@ -79,5 +93,8 @@ class CategoriaController extends Controller
     public function destroy(string $id)
     {
         //
+        Categoria::destroy($id);
+        return redirect('categorias')->with('type','danger')
+                                         ->with('message','El registro se eliminó exitosamente.');
     }
 }

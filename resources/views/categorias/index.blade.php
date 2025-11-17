@@ -27,7 +27,16 @@
                         {{ $categoria->descripcion }}
                     </td>
                     <td>
-                        Editar - Eliminar
+                        <a href="{{ route('categorias.edit', $categoria->id) }}" class="btn btn-info">
+                            <img src="{{ url('https://img.icons8.com/color/48/edit--v1.png') }}" width="25">
+                        </a>
+                        <form action="{{ route('categorias.destroy',$categoria->id) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger" onclick="return confirm('¿Quiere eliminar el registro?')">
+                                <img src="{{ url('https://img.icons8.com/papercut/60/erase.png') }}" width="25">
+                            </button>
+                        </form>
                     </td>
                 </tr>
             @endforeach
